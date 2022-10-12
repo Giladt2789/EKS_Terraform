@@ -46,13 +46,13 @@ cat >load-balancer-role-trust-policy.json <<EOF
         {
             "Effect": "Allow",
             "Principal": {
-                "Federated": "arn:aws:iam::<sub>111122223333</sub>:oidc-provider/oidc.eks.<sub>region-code</sub>.amazonaws.com/id/<sub>EXAMPLED539D4633E53DE1B71EXAMPLE</sub>"
+                "Federated": "arn:aws:iam::<111122223333>:oidc-provider/oidc.eks.<region-code>.amazonaws.com/id/<EXAMPLED539D4633E53DE1B71EXAMPLE>"
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
                 "StringEquals": {
-                    "oidc.eks.<sub>region-code</sub>.amazonaws.com/id/<sub>EXAMPLED539D4633E53DE1B71EXAMPLE</sub>:aud": "sts.amazonaws.com",
-                    "oidc.eks.<sub>region-code</sub>.amazonaws.com/id/<sub>EXAMPLED539D4633E53DE1B71EXAMPLE</sub>:sub": "system:serviceaccount:kube-system:aws-load-balancer-controller"
+                    "oidc.eks.<region-code>.amazonaws.com/id/<EXAMPLED539D4633E53DE1B71EXAMPLE>:aud": "sts.amazonaws.com",
+                    "oidc.eks.<region-code>.amazonaws.com/id/<EXAMPLED539D4633E53DE1B71EXAMPLE>:sub": "system:serviceaccount:kube-system:aws-load-balancer-controller"
                 }
             }
         }
@@ -65,7 +65,8 @@ EOF
 aws iam create-role --role-name AmazonEKSLoadBalancerControllerRole --assume-role-policy-document file://"load-balancer-role-trust-policy.json"
 ```
 4.3. Let's attach the required Amazon EKS managed IAM policy to the IAM role. Again, replace the <111122223333> with your account ID:
-```aws iam attach-role-policy --policy-arn arn:aws:iam::<sub>111122223333</sub>:policy/AWSLoadBalancerControllerIAMPolicy --role-name AmazonEKSLoadBalancerControllerRole
+```
+aws iam attach-role-policy --policy-arn arn:aws:iam::<111122223333>:policy/AWSLoadBalancerControllerIAMPolicy --role-name AmazonEKSLoadBalancerControllerRole
 ```
 
 4.4. Now, open your favorite text editor, copy this snippet and edit it with the following replacements:
@@ -80,7 +81,7 @@ metadata:
   name: aws-load-balancer-controller
   namespace: kube-system
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/AmazonEKSLoadBalancerControllerRole
+    eks.amazonaws.com/role-arn: arn:aws:iam::<111122223333>:role/AmazonEKSLoadBalancerControllerRole
 ```
 save the file as: aws-load-balancer-controller-service-account.yaml
 4.5. Run the command: 
@@ -118,3 +119,4 @@ The output should be as such:
 NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
 aws-load-balancer-controller    1/1     1            1           84s
 ```
+The next step is to deploy a simple app to test this configuration.
