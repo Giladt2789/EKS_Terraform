@@ -28,7 +28,8 @@ if no output or error given, you must create an IAM OIDC provider for the cluste
 * region-code
 * EXAMPLED539D4633E53DE1B71EXAMPLE
 
-```cat >load-balancer-role-trust-policy.json <<EOF
+```
+cat >load-balancer-role-trust-policy.json <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -47,7 +48,8 @@ if no output or error given, you must create an IAM OIDC provider for the cluste
         }
     ]
 }
-EOF```
+EOF
+```
 4.2. Now let's create the IAM role:
 `aws iam create-role --role-name AmazonEKSLoadBalancerControllerRole --assume-role-policy-document file://"load-balancer-role-trust-policy.json"
 `
