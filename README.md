@@ -28,7 +28,7 @@ if no output or error given, you must create an IAM OIDC provider for the cluste
 * region-code
 * EXAMPLED539D4633E53DE1B71EXAMPLE
 
-`cat >load-balancer-role-trust-policy.json <<EOF
+```cat >load-balancer-role-trust-policy.json <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -47,7 +47,7 @@ if no output or error given, you must create an IAM OIDC provider for the cluste
         }
     ]
 }
-EOF`
+EOF```
 4.2. Now let's create the IAM role:
 `aws iam create-role --role-name AmazonEKSLoadBalancerControllerRole --assume-role-policy-document file://"load-balancer-role-trust-policy.json"
 `
@@ -56,7 +56,7 @@ EOF`
 
 4.4. Now, open your favorite text editor, copy this snippet and edit it with the following replacements:
 * 111122223333 - account ID
-`apiVersion: v1
+```apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
@@ -65,7 +65,7 @@ metadata:
   name: aws-load-balancer-controller
   namespace: kube-system
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/AmazonEKSLoadBalancerControllerRole`
+    eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/AmazonEKSLoadBalancerControllerRole```
 save the file as: aws-load-balancer-controller-service-account.yaml
 4.5. Run the command: `kubectl apply -f aws-load-balancer-controller-service-account.yaml
 ` to create the service account.
