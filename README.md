@@ -2,14 +2,14 @@
 Provisioning an EKS cluster using Terraform
 
 In order to provision the cluster, you must run:
-1. $ `terraform init`
-2. $ `terraform validate`
-3. $ `terraform plan`
-4. $ `terraform apply -auto-approve` (the auto approve is optional)
+1. `$ terraform init`
+2. `$ terraform validate`
+3. `$ terraform plan`
+4. `$ terraform apply -auto-approve` (the auto approve is optional)
 
 Depend on the system (it took me about 15 minutes give or take to fully operational cluster), you should be getting
 the cluster name as an output on the terminal. If you run my script in full, the cluster should be called "EKS_test-cluster".
-In order to connect the aws account with our cluster (for management purposes), run this command to attach the cluster (change the <aws-region> and the <cluster-name> to your own)
+In order to connect the aws account with our cluster (for management purposes), run this command to attach the cluster (change the <aws-region> and the <cluster-name> to your own)<br/>
 `aws eks --region <aws-region> update-kubeconfig --name <cluster-name>`
 
 In order to provision an aws alb ingress controller - according to the official documentaion:
@@ -34,9 +34,9 @@ oidc.eks.region-code.amazonaws.com/id/EXAMPLED539D4633E53DE1B71EXAMPLE
 ```
 If no output or error given, you must create an IAM OIDC provider for the cluster. The link is [IAM OIDC create](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
 4.1. After creating the IAM OIDC provider, run again the command for step 3, and copy the text after id above (here it starts with ``EXAMPLED539...``). Write it down somewhere, you'll be using it later. Also, write down your account ID. in the following code snippet, you'll replace those parameters:
-* <111122223333>
-* <region-code>
-* <EXAMPLED539D4633E53DE1B71EXAMPLE>
+* `<111122223333>`
+* `<region-code>`
+* `<EXAMPLED539D4633E53DE1B71EXAMPLE>`
 
 ```
 cat >load-balancer-role-trust-policy.json <<EOF
@@ -70,7 +70,7 @@ aws iam attach-role-policy --policy-arn arn:aws:iam::<111122223333>:policy/AWSLo
 ```
 
 4.4. Now, open your favorite text editor, copy this snippet and edit it with the following replacements:
-* 111122223333 - account ID
+* `<111122223333>` - account ID
 ```
 apiVersion: v1
 kind: ServiceAccount
@@ -83,11 +83,12 @@ metadata:
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::<111122223333>:role/AmazonEKSLoadBalancerControllerRole
 ```
-save the file as: aws-load-balancer-controller-service-account.yaml
-4.5. Run the command: 
+save the file as: aws-load-balancer-controller-service-account.yaml<br/>
+
+4.5. Run the command: <br/>
 `kubectl apply -f aws-load-balancer-controller-service-account.yaml` to create the service account.
 
-5. In order to install the AWS Load Balancer Controller, we need to do the following:
+5. In order to install the AWS Load Balancer Controller, we need to do the following: <br/>
 5.1. Install the `cert-manager` using this command:
 ```
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
@@ -96,13 +97,13 @@ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/relea
 ```
 curl -Lo v2_4_4_full.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.4.4/v2_4_4_full.yaml
 ```
-(Note - this is relevant for version 2.4.4)
+(Note - this is relevant for version 2.4.4)<br/>
 5.3. Run the following commands in order to re-configure the ServiceAccount file:
 ```
 sed -i.bak -e '480,488d' ./v2_4_4_full.yaml
 sed -i.bak -e 's|your-cluster-name|my-cluster|' ./v2_4_4_full.yaml
 ```
-Where my-cluster is the name of your cluster (acquired in step 3).
+Where my-cluster is the name of your cluster (acquired in step 3).<br/>
 5.4. Apply the file and download the dependencies using the followong commands: 
 `kubectl apply -f v2_4_4_full.yaml`
 Download the `IngressClass` and the `IngressClassParams`:
