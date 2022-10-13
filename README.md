@@ -104,7 +104,7 @@ sed -i.bak -e '480,488d' ./v2_4_4_full.yaml
 sed -i.bak -e 's|your-cluster-name|my-cluster|' ./v2_4_4_full.yaml
 ```
 Where my-cluster is the name of your cluster (acquired in step 3).<br/>
-5.4. Apply the file and download the dependencies using the followong commands: 
+5.4. Apply the file and download the dependencies using the followong commands: <br/>
 `kubectl apply -f v2_4_4_full.yaml`
 Download the `IngressClass` and the `IngressClassParams`:
 ```
@@ -113,7 +113,7 @@ curl -Lo v2_4_4_ingclass.yaml https://github.com/kubernetes-sigs/aws-load-balanc
 Now let's apply the manifest to the cluster:
 `kubectl apply -f v2_4_4_ingclass.yaml`
 
-6. In order to be sure that the controller is well-installed, check it with the following command:
+6. In order to be sure that the controller is well-installed, check it with the following command:<br/>
 `kubectl get deployment -n kube-system aws-load-balancer-controller`
 The output should be as such:
 ```
