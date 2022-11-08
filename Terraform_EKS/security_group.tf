@@ -4,27 +4,27 @@ resource "aws_security_group" "public_sg" {
   vpc_id = aws_vpc.EKS.id
   #ingress
   ingress {
-    description       = "sg_ingress_public_443"
-    from_port         = 443
-    to_port           = 443
-    protocol          = "tcp"
-    cidr_blocks       = ["0.0.0.0/0"]
+    description = "sg_ingress_public_443"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    description       = "sg_ingress_public_80"
-    from_port         = 80
-    to_port           = 80
-    protocol          = "tcp"
-    cidr_blocks       = ["0.0.0.0/0"]
+    description = "sg_ingress_public_80"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    description       = "sg_egress_public"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    cidr_blocks       = ["0.0.0.0/0"]
+    description = "sg_egress_public"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -43,27 +43,27 @@ resource "aws_security_group" "data_plane_sg" {
 
   # Security group traffic rules
   ingress {
-    description       = "Allow nodes to communicate with each other"
-    from_port         = 0
-    to_port           = 65535
-    protocol          = "tcp"
-    cidr_blocks       = flatten([cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 0), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 1), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 2), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 3)])
+    description = "Allow nodes to communicate with each other"
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = flatten([cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 0), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 1), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 2), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 3)])
   }
 
   ingress {
-    description       = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
-    from_port         = 1025
-    to_port           = 65535
-    protocol          = "tcp"
-    cidr_blocks       = flatten([cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 2), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 3)])
+    description = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
+    from_port   = 1025
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = flatten([cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 2), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 3)])
   }
 
   egress {
-    description       = "node_outbound"
-    from_port         = 0
-    to_port           = 0
-    protocol          = "-1"
-    cidr_blocks       = ["0.0.0.0/0"]
+    description = "node_outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -77,19 +77,19 @@ resource "aws_security_group" "control_plane_sg" {
   }
 
   ingress {
-    description       = "control_plane_inbound"
-    from_port         = 0
-    to_port           = 65535
-    protocol          = "tcp"
-    cidr_blocks       = flatten([cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 0), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 1), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 2), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 3)])
+    description = "control_plane_inbound"
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = flatten([cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 0), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 1), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 2), cidrsubnet(var.vpc_cidr, var.subnet_cidr_bits, 3)])
   }
 
   egress {
-    description       = "control_plane_outbound" 
-    from_port         = 0
-    to_port           = 65535
-    protocol          = "tcp"
-    cidr_blocks       = ["0.0.0.0/0"]
+    description = "control_plane_outbound"
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -104,17 +104,17 @@ resource "aws_security_group" "eks_cluster" {
   }
 
   ingress {
-    description              = "Allow worker nodes to communicate with the cluster API Server"
-    from_port                = 443
-    to_port                  = 443
-    protocol                 = "tcp"
+    description = "Allow worker nodes to communicate with the cluster API Server"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
   }
 
   egress {
-    description              = "Allow cluster API Server to communicate with the worker nodes"
-    from_port                = 1024
-    to_port                  = 65535
-    protocol                 = "tcp"
+    description = "Allow cluster API Server to communicate with the worker nodes"
+    from_port   = 1024
+    to_port     = 65535
+    protocol    = "tcp"
   }
 }
 
@@ -132,17 +132,17 @@ resource "aws_security_group" "eks_nodes" {
   }
 
   ingress {
-    description              = "Allow nodes to communicate with each other"
-    from_port                = 0
-    to_port                  = 65535
-    protocol                 = "-1"
+    description = "Allow nodes to communicate with each other"
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "-1"
   }
 
   ingress {
-    description              = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
-    from_port                = 1025
-    to_port                  = 65535
-    protocol                 = "tcp"
+    description = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
+    from_port   = 1025
+    to_port     = 65535
+    protocol    = "tcp"
   }
 
   tags = {
