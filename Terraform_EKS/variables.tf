@@ -4,17 +4,17 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-variable "aws_access_key" {
-  description = "AWS access key"
-  type        = string
-  default     = "GRKeypair"
-}
+# variable "aws_access_key" {
+#   description = "AWS access key"
+#   type        = string
+#   default     = "GRKeypair"
+# }
 
-variable "location_of_key" {
-  description = "The location of the saved key-pair"
-  type        = string
-  default     = "/home/gilad/Documents/Private/GRKeypair.pem"
-}
+# variable "location_of_key" {
+#   description = "The location of the saved key-pair"
+#   type        = string
+#   default     = "/home/gilad/Documents/Private/GRKeypair.pem"
+# }
 
 variable "availability_zones_count" {
   description = "The number of AZs."
